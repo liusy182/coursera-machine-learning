@@ -56,7 +56,6 @@ hold off;
 % Note that mapFeature also adds a column of ones for us, so the intercept
 % term is handled
 X = mapFeature(X(:,1), X(:,2));
-
 % Initialize fitting parameters
 initial_theta = zeros(size(X, 2), 1);
 
@@ -68,6 +67,7 @@ lambda = 1;
 [cost, grad] = costFunctionReg(initial_theta, X, y, lambda);
 
 fprintf('Cost at initial theta (zeros): %f\n', cost);
+fprintf('gradient: [%f]\n', grad);
 
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
