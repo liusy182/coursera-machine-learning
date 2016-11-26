@@ -19,27 +19,12 @@ grad = zeros(size(theta));
 
 z = (theta' * X')';
 sig = sigmoid(z);
+log_term = (-y)' * log(sig) - (1 - y)' * log(1 - sig);
 
-first = (-y)' * log(sig));
-second = ((1 - y') * log(1 - sig));
-third = theta(2:end, 1); 
-J = ((first - second) ./ m) + (sum(third) * lambda ./ m ./ 2);
-grad = (sig - y)' * X ./ m + [0; third] .* lambda ./ m;
+J = log_term ./ m + sum(power(theta(2:end), 2)) * lambda / m / 2;
 
-%stheta=length(theta);
-%z=X*theta;
-%h=sigmoid(z);
-%logisf=(-y)'*log(h)-(1-y)'*log(1-h);
+grad = ((sig - y)' * X)' ./ m + [0; theta(2:end)] .* lambda ./ m;
 
-%J=((1/m).*sum(logisf))+(lambda/(2*m)).*sum(theta.^2);
-
-%k=length(theta)-1;
-%n=length(theta);
-%grad(1)=1/m.*(sum(X'(1,:)*h-X'(1,:)*y));
-
-%for j=2:n
-%	grad(j)=(1/m).*(sum(X'(j,:)*h-X'(j,:)*y)+lambda.*theta(j,1));
-%end
 % =============================================================
 
 end
