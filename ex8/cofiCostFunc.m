@@ -39,19 +39,26 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
+D = (R .* (X * Theta' - Y));
+J = 1 / 2 * sum(sum( D .^ 2 )); %'
 
+J = J + (lambda / 2) * (sum(sumsq(Theta)) + sum(sumsq(X))); 
 
+for i = 1:num_movies
+	idx = find(R(i,:) == 1);
+	theta_tmp = Theta(idx,:);
+	y_tmp = Y(i,idx);
+	X_grad(i,:) = ((X(i,:) * theta_tmp') - y_tmp) * theta_tmp + lambda * X(i,:);
+end
 
-
-
-
-
-
-
-
-
-
-
+for j = 1:num_users
+idx = find(R(:,j) == 1);
+	% X is a movies x features matrix (i x k)
+	x_tmp = X(idx,:);
+	% Y is a movies x users matrix (i x j)
+	y_tmp = Y(idx,j);
+	Theta_grad(j,:) = ((Theta(j,:) * x_tmp') - y_tmp') * x_tmp + lambda * Theta(j,:);
+end
 
 
 
